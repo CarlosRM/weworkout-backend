@@ -20,6 +20,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'birthdate',
+        'genre',
+        'description'
     ];
 
     /**
@@ -39,5 +42,61 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'birthdate' => 'datetime'
     ];
+
+    /**
+     * Get the comments for the user.
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    /**
+     * Get the comments for the user.
+     */
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class);
+    }
+
+    /**
+     * Get the routines for the user.
+     */
+    public function routines()
+    {
+        return $this->hasMany(Routine::class);
+    }
+
+    /* Get the followers for the user */
+    public function followers()
+    {
+        return $this->belongsToMany(
+            self::class, 
+            'followers',
+            'followee',
+            'follower'
+        );
+    }
+
+    /* Get the followeed for the user */
+    public function followees()
+    {
+        return $this->belongsToMany(
+            self::class, 
+            'followers',
+            'follower',
+            'followee'
+        );
+    }
+
+    /* Get the followers for the user */
+    public function favouriteRoutines()
+    {
+        return $this->belongsToMany(
+            Routine::class, 
+            'favourite_routines'
+        );
+    }
 }
