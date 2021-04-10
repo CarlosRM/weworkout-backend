@@ -10,9 +10,9 @@ class Workout extends Model
     use HasFactory;
 
     /**
-     * The muscles that belong to the user.
+     * The sets that belong to the user.
      */
-    public function muscles()
+    public function sets()
     {
         return $this->belongsToMany(Set::class);
     }

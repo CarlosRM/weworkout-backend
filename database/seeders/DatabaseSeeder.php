@@ -3,6 +3,9 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -22,6 +25,17 @@ class DatabaseSeeder extends Seeder
             ExerciseSeeder::class,
         ]);
 
+        /* Seed test user */
+        $user = new \App\Models\User;
+        $user->name = 'testuser';
+        $user->email = 'fakemail@fakemail.com';
+        $user->email_verified_at = now();
+        $user->password = Hash::make('1234');
+        $user->remember_token = Str::random(10);
+        $user->birthdate = now();
+        $user->genre = 'Hombre';
+        $user->description = 'test desc';
+        $user->save();
         /* Seed the users and routines via factories */
         \App\Models\User::factory(10)->create();
         \App\Models\Routine::factory(40)->create();
