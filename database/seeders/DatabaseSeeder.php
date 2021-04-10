@@ -14,11 +14,15 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // \App\Models\User::factory(10)->create();
+
+        /* Seed the most basic tables */
         $this->call([
             MuscleSeeder::class,
             CategorySeeder::class,
             ExerciseSeeder::class,
         ]);
+
+        /* Seed the users and routines via factories */
         \App\Models\User::factory(10)->create();
         \App\Models\Routine::factory(40)->create();
 
@@ -27,7 +31,7 @@ class DatabaseSeeder extends Seeder
         $categories = \App\Models\Category::all();
         $sets = \App\Models\Set::all();
 
-
+        /* Seed the many to many relationships */
         \App\Models\User::all()->each(function ($user) use ($routines) { 
             $user->favouriteRoutines()->attach(
                 $routines->random(rand(1, 3))->pluck('id')->toArray()
@@ -51,6 +55,10 @@ class DatabaseSeeder extends Seeder
                 $sets->random(rand(1, 5))->pluck('id')->toArray()
             ); 
         });
+
+        /* Seed the comments */
+        \App\Models\Comment::factory(40)->create();
+
 
 
     }
