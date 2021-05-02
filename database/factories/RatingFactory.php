@@ -2,18 +2,19 @@
 
 namespace Database\Factories;
 
+use App\Models\Rating;
 use App\Models\Routine;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class RoutineFactory extends Factory
+class RatingFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Routine::class;
+    protected $model = Rating::class;
 
     /**
      * Define the model's default state.
@@ -22,11 +23,14 @@ class RoutineFactory extends Factory
      */
     public function definition()
     {
+
         $users = \App\Models\User::pluck('id')->toArray();
+        $routines = \App\Models\Routine::pluck('id')->toArray();
+
+
         return [
-            'name' => $this->faker->sentence($nbWords = 5, $variableNbWords = true),
-            'description' => $this->faker->text,
-            'visualizations' => $this->faker->numberBetween(0, 2000),
+            'rating' => $this->faker->numberBetween(1,5),
+            'routine_id' => $this->faker->randomElement($routines),
             'user_id' => $this->faker->randomElement($users),
         ];
     }

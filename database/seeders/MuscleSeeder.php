@@ -49,7 +49,7 @@ class MuscleSeeder extends Seeder
         foreach ($frontMuscles as $muscle) {
             Muscle::create(['name' => $muscle, 'bodypart' => 'Torso']);
         }
-
+        // Bodypart: Espalda
         $backMuscles = [
             'Dorsales',
             'Oblicuos',

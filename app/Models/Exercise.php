@@ -22,4 +22,16 @@ class Exercise extends Model
     {
         return $this->hasMany(Set::class);
     }
+
+    
+    /* Get the similars for the exercise */
+    public function similar()
+    {
+        return $this->belongsToMany(
+            self::class, 
+            'similar_exercises',
+            'exercise',
+            'similar'
+        );
+    }
 }

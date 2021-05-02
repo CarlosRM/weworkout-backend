@@ -44,6 +44,7 @@ class DatabaseSeeder extends Seeder
         $routines = \App\Models\Routine::all();
         $categories = \App\Models\Category::all();
         $sets = \App\Models\Set::all();
+        $exercises = \App\Models\Exercise::all();
 
         /* Seed the many to many relationships */
         \App\Models\User::all()->each(function ($user) use ($routines) { 
@@ -55,6 +56,18 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::all()->each(function ($user) use ($users) { 
             $user->followers()->attach(
                 $users->random(rand(1, 3))->pluck('id')->toArray()
+            ); 
+        });
+
+        \App\Models\Exercise::all()->each(function ($exercise) use ($exercises) { 
+            $exercise->similar()->attach(
+                $exercises->random(rand(1, 3))->pluck('id')->toArray()
+            ); 
+        });
+
+        \App\Models\Routine::all()->each(function ($routine) use ($routines) { 
+            $routine->similar()->attach(
+                $routines->random(rand(1, 3))->pluck('id')->toArray()
             ); 
         });
 
@@ -72,6 +85,7 @@ class DatabaseSeeder extends Seeder
 
         /* Seed the comments */
         \App\Models\Comment::factory(40)->create();
+        \App\Models\Rating::factory(40)->create();
 
 
 

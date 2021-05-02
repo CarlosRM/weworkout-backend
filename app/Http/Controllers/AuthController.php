@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
 
-class AuthController extends Controller
+class AuthController extends ApiController
 {
     /**
      * Create a new AuthController instance.
@@ -26,7 +27,7 @@ class AuthController extends Controller
         $credentials = request(['email', 'password']);
         if (! $token = auth()->attempt($credentials)) {
 
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['error' => 'Credenciales incorrectas'], 401);
         }
 
         return $this->respondWithToken($token);
@@ -39,7 +40,7 @@ class AuthController extends Controller
      */
     public function me()
     {
-        return response()->json(auth()->user());
+        return response()->json(['user' => $this->getCurrentUser()], 200);
     }
 
     /**
@@ -77,7 +78,13 @@ class AuthController extends Controller
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
-            'user' => auth()->user()
+            'user' => $this->getCurrentUser()
         ], 200);
+    }
+
+    function getCurrentUser() {
+        $user = User::find(auth()->user()->id);
+        $user->favourite_routines = $user->favouriteRoutines()->pluck('favourite_routines.id')->toArray();
+        return $user;
     }
 }

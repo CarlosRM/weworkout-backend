@@ -16,8 +16,8 @@ class CreateRoutinesTable extends Migration
         Schema::create('routines', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->unsignedBigInteger('author');
-            $table->foreign('author')
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')
                     ->references('id')
                     ->on('users')->onDelete('cascade');
             $table->string('name');

@@ -57,4 +57,15 @@ class Routine extends Model
     {
         return $this->hasMany(Rating::class);
     }
+
+    /* Get the similars for the routine */
+    public function similar()
+    {
+        return $this->belongsToMany(
+            self::class, 
+            'similar_routines',
+            'routine',
+            'similar'
+        );
+    }
 }

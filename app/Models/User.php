@@ -113,7 +113,7 @@ class User extends Authenticatable implements JWTSubject
         );
     }
 
-    /* Get the followers for the user */
+    /* Get the favouriteRoutines for the user */
     public function favouriteRoutines()
     {
         return $this->belongsToMany(
