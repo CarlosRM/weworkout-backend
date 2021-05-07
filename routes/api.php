@@ -41,15 +41,17 @@ Route::group([
 });
 
 // User Routes
-Route::get('users', 'UserController@index')->middleware('jwt', 'belongsToUser');
+Route::get('users', 'UserController@index')->middleware('jwt');
 Route::get('users/{user}', 'UserController@show')->middleware('jwt', 'belongsToUser');
-Route::post('users', 'UserController@store')->middleware('jwt', 'belongsToUser');
+Route::post('users', 'UserController@store')->middleware('jwt');
 Route::put('users/{user}', 'UserController@update')->middleware('jwt', 'belongsToUser');
 Route::delete('users/{user}', 'UserController@delete')->middleware('jwt', 'belongsToUser');
 
 Route::get('users/{user}/addFavorite/{routine}', 'UserController@addFavorite')->middleware('jwt', 'belongsToUser');
 Route::get('users/{user}/removeFavorite/{routine}', 'UserController@removeFavorite')->middleware('jwt', 'belongsToUser');
 
+Route::post('users/{user}/follow/{followee}', 'UserController@follow')->middleware('jwt');
+Route::post('users/{user}/unfollow/{followee}', 'UserController@unfollow')->middleware('jwt');
 
 // Routine Routes
 Route::get('routines', 'RoutineController@index')->middleware('jwt');
@@ -57,6 +59,8 @@ Route::get('routines/{routine}', 'RoutineController@show')->middleware('jwt');
 Route::post('routines', 'RoutineController@store')->middleware('jwt');
 Route::put('routines/{routine}', 'RoutineController@update')->middleware('jwt');
 Route::delete('routines/{routine}', 'RoutineController@delete')->middleware('jwt');
+Route::post('routines/{routine}/comment', 'RoutineController@addComment')->middleware('jwt');
+
 
 // Exercise Routes
 Route::get('exercises', 'ExerciseController@index')->middleware('jwt');

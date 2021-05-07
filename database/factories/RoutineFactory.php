@@ -25,7 +25,7 @@ class RoutineFactory extends Factory
         $users = \App\Models\User::pluck('id')->toArray();
         return [
             'name' => $this->faker->sentence($nbWords = 5, $variableNbWords = true),
-            'description' => $this->faker->text,
+            'description' => $this->faker->text(1000),
             'visualizations' => $this->faker->numberBetween(0, 2000),
             'user_id' => $this->faker->randomElement($users),
         ];

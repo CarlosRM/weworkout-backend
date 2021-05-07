@@ -84,7 +84,10 @@ class AuthController extends ApiController
 
     function getCurrentUser() {
         $user = User::find(auth()->user()->id);
-        $user->favourite_routines = $user->favouriteRoutines()->pluck('favourite_routines.id')->toArray();
+        $user->favourite_routines = $user->favouriteRoutines()->pluck('routine_id')->toArray();
+        $user->followers = $user->followers()->pluck('follower')->toArray();
+        $user->followees = $user->followees()->pluck('followee')->toArray();
+        $user->routines = $user->routines()->pluck('id')->toArray();
         return $user;
     }
 }

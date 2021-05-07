@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
+
 
 
 class DatabaseSeeder extends Seeder
@@ -32,7 +34,7 @@ class DatabaseSeeder extends Seeder
         $user->email_verified_at = now();
         $user->password = Hash::make('1234');
         $user->remember_token = Str::random(10);
-        $user->birthdate = now();
+        $user->birthdate = Carbon::today()->subYears(rand(0, 30));
         $user->genre = 'Hombre';
         $user->description = 'test desc';
         $user->save();

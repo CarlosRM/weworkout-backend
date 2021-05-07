@@ -67,4 +67,34 @@ class UserController extends ApiController
         return $this->successResponse($routine, 'Rutina eliminada de Favoritos con éxito', 200);
     }
 
+    public function follow(Request $request, User $user, User $followee) {
+
+        if (Auth::user()->id != $user->id) {
+            return response()->json(["msg" => "No autorizado"], 401);
+        }
+
+        try {
+            $user->followees()->attach($followee);
+        } catch(\Illuminate\Database\QueryException $e) {
+            return $this->errorResponse('Ha habido un error siguiendo a este usuario', 409);
+        }
+
+        return $this->successResponse($followee->id, 'Usuario seguido con éxito', 200);
+    }
+
+    public function unfollow(Request $request, User $user, User $followee) {
+
+        if (Auth::user()->id != $user->id) {
+            return response()->json(["msg" => "No autorizado"], 401);
+        }
+
+        try {
+            $user->followees()->detach($followee);
+        } catch(\Illuminate\Database\QueryException $e) {
+            return $this->errorResponse('Ha habido un error dejando de seguir a este usuario', 409);
+        }
+
+        return $this->successResponse($followee->id, 'Usuario dejado de seguir con éxito', 200);
+    }
+
 }
