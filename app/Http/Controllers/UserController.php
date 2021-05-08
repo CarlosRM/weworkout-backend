@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Models\Routine;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+
 
 class UserController extends ApiController
 {
@@ -37,9 +39,17 @@ class UserController extends ApiController
 
     public function update(Request $request, User $user)
     {
+        if (Auth::user()->id != $user->id) {
+            return response()->json(["msg" => "No autorizado"], 401);
+        }
+        Log::error($request->all());
         $user->update($request->all());
+        $user->favourite_routines = $user->favouriteRoutines()->pluck('routine_id')->toArray();
+        $user->followers = $user->followers()->pluck('follower')->toArray();
+        $user->followees = $user->followees()->pluck('followee')->toArray();
+        $user->routines = $user->routines()->pluck('id')->toArray();
 
-        return response()->json($user, 200);
+        return $this->successResponse($user, 'Usuario editado con éxito', 200);
     }
 
     public function delete(User $user)
