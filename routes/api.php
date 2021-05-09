@@ -43,7 +43,7 @@ Route::group([
 // User Routes
 Route::get('users', 'UserController@index')->middleware('jwt');
 Route::get('users/{user}', 'UserController@show')->middleware('jwt', 'belongsToUser');
-Route::post('users', 'UserController@store')->middleware('jwt');
+Route::post('users', 'UserController@store');
 Route::put('users/{user}', 'UserController@update')->middleware('jwt', 'belongsToUser');
 Route::delete('users/{user}', 'UserController@delete')->middleware('jwt', 'belongsToUser');
 
@@ -60,6 +60,8 @@ Route::post('routines', 'RoutineController@store')->middleware('jwt');
 Route::put('routines/{routine}', 'RoutineController@update')->middleware('jwt');
 Route::delete('routines/{routine}', 'RoutineController@delete')->middleware('jwt');
 Route::post('routines/{routine}/comment', 'RoutineController@addComment')->middleware('jwt');
+Route::post('routines/{routine}/rating', 'RoutineController@addRating')->middleware('jwt');
+
 
 
 // Exercise Routes

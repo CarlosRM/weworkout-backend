@@ -9,7 +9,11 @@ class Rating extends Model
 {
     use HasFactory;
 
-    use HasFactory;
+    protected $fillable = [
+        'user_id',
+        'routine_id',
+        'rating'
+    ];
 
     /**
      * Get the user that owns the comment.

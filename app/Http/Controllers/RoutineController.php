@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Set;
 use App\Models\Category;
 use App\Models\Comment;
+use App\Models\Rating;
 
 
 use Illuminate\Support\Facades\Log;
@@ -137,6 +138,11 @@ class RoutineController extends ApiController
 
     public function addComment(Request $request, Routine $routine)
     {
+
+        if (Auth::user()->id != $request->input('user_id')) {
+            return response()->json(["msg" => "No autorizado"], 401);
+        }
+
         try {
             $comment = Comment::create($request->all());
 
@@ -159,6 +165,38 @@ class RoutineController extends ApiController
             return $this->successResponse($routine, 'Comentario añadido con éxito', 201);
         } catch (Exception $e) {
             return $this->errorResponse('Ha habido un error creando tu comentario', 500);
+        }
+    }
+
+    public function addRating(Request $request, Routine $routine)
+    {
+
+
+        try {
+            $comment = Rating::updateOrCreate(
+                ['user_id' => Auth::user()->id, 'routine_id' => $routine->id],
+                ['rating' => $request->rating]
+            );
+
+            $routine = Routine::find($routine->id);        
+            $routine->rating = $routine->ratings()->avg('rating');
+            $routine->sets;
+            $bodyparts = [];
+            foreach ($routine->sets as $set) {
+                $muscles = $set->exercise->muscles;
+                foreach ($muscles as $muscle) {
+                    $bodyparts[] = $muscle->bodypart;
+                }
+            }
+            $routine->bodyparts = array_values(array_unique($bodyparts));
+            $routine->categories = $routine->categories()->pluck('categories.id')->toArray();
+            $routine->similar = $routine->similar()->pluck('routines.id')->toArray();
+            $routine->comments;
+
+        
+            return $this->successResponse($routine, 'Rating añadido con éxito', 201);
+        } catch (Exception $e) {
+            return $this->errorResponse('Ha habido un error añadiendo tu rating', 500);
         }
     }
 }

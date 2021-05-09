@@ -8,6 +8,10 @@ use App\Models\Routine;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+
+
 
 
 class UserController extends ApiController
@@ -32,9 +36,25 @@ class UserController extends ApiController
 
     public function store(Request $request)
     {
-        $user = User::create($request->all());
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
+            'email' => 'required|string|email|unique:users',
+            'password' => 'required|string',
+        ]);
 
-        return response()->json($user, 201);
+        if($validator->fails()){
+                return $this->errorResponse($validator->errors()->toJson(), 400);
+        }
+
+        $user = User::create([
+            'name' => $request->get('name'),
+            'email' => $request->get('email'),
+            'birthdate' => $request->get('birthdate'),
+            'genre' => $request->get('genre'),
+            'password' => Hash::make($request->get('password')),
+        ]);
+
+        return $this->successResponse($user, 'Registro completado con éxito. Inicia sesión para continuar', 200);
     }
 
     public function update(Request $request, User $user)
