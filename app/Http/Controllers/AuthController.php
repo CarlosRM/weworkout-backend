@@ -88,6 +88,7 @@ class AuthController extends ApiController
         $user->followers = $user->followers()->pluck('follower')->toArray();
         $user->followees = $user->followees()->pluck('followee')->toArray();
         $user->routines = $user->routines()->pluck('id')->toArray();
+        $user->workouts;
         return $user;
     }
 }

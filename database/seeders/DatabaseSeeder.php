@@ -29,23 +29,25 @@ class DatabaseSeeder extends Seeder
 
         /* Seed test user */
         $user = new \App\Models\User;
-        $user->name = 'testuser';
-        $user->email = 'fakemail@fakemail.com';
+        $user->name = 'Tony Stark';
+        $user->email = 'ironman@avengers.com';
         $user->email_verified_at = now();
-        $user->password = Hash::make('1234');
+        $user->password = Hash::make('PepperPotts<3');
         $user->remember_token = Str::random(10);
         $user->birthdate = Carbon::today()->subYears(rand(0, 30));
         $user->genre = 'Hombre';
-        $user->description = 'test desc';
+        $user->description = 'HOMBRE DE ACERO. Genio. Multimillonario. Filántropo. La confianza de Tony Stark solo se compara con sus habilidades de alto vuelo como el héroe llamado Iron Man.';
         $user->save();
         /* Seed the users and routines via factories */
         \App\Models\User::factory(10)->create();
         \App\Models\Routine::factory(40)->create();
+        \App\Models\Workout::factory(750)->create();
 
         $users = \App\Models\User::all();
         $routines = \App\Models\Routine::all();
         $categories = \App\Models\Category::all();
         $sets = \App\Models\Set::all();
+        $workouts = \App\Models\Workout::all();
         $exercises = \App\Models\Exercise::all();
 
         /* Seed the many to many relationships */
@@ -83,6 +85,13 @@ class DatabaseSeeder extends Seeder
             $routine->sets()->attach(
                 $sets->random(rand(1, 5))->pluck('id')->toArray()
             ); 
+        });
+
+        \App\Models\Workout::all()->each(function ($workout) use ($sets) {
+            $workout->sets()->attach(
+                $sets->random(rand(1, 5))->pluck('id')->toArray(),
+                ['weight' => rand(0, 100)]
+            );
         });
 
         /* Seed the comments */

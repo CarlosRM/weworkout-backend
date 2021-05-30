@@ -50,17 +50,17 @@ class ExerciseSeeder extends Seeder
             [
                 'name' => 'Flexión Arquero',
                 'muscles' => ['Pecho', 'Tríceps', 'Abdominales Superiores'],
-                'videoURL' => 'https://www.youtube.com/embed/jiA3RnMxFU0&ab_channel=MichaelVazquez'
+                'videoURL' => 'https://www.youtube.com/embed/3wZuPAjC12M'
             ],
             [
                 'name' => 'Dominada Prona',
                 'muscles' => ['Dorsales', 'Bíceps', 'Trapecios', 'Hombros', 'Pecho'],
-                'videoURL' => 'https://www.youtube.com/embed/jgFel4wZl3I'
+                'videoURL' => 'https://www.youtube.com/embed/afCXfuySAso'
             ],
             [
                 'name' => 'Dominada Supina',
                 'muscles' => ['Dorsales', 'Bíceps', 'Trapecios', 'Hombros', 'Pecho'],
-                'videoURL' => 'https://www.youtube.com/embed/uv6mAYXe9Jg&ab_channel=MyPTHub'
+                'videoURL' => 'https://www.youtube.com/embed/uHheC0C4T3w'
             ],
             [
                 'name' => 'Sentadilla',

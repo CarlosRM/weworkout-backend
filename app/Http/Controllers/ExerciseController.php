@@ -13,6 +13,7 @@ class ExerciseController extends ApiController
         $exercises = Exercise::all();
         foreach($exercises as $exercise) {
             $exercise->similar = $exercise->similar()->pluck('exercises.id')->toArray();
+            $exercise->muscles;
         }
         return $this->successResponse($exercises, 200);
     }

@@ -199,4 +199,34 @@ class RoutineController extends ApiController
             return $this->errorResponse('Ha habido un error añadiendo tu rating', 500);
         }
     }
+
+    public function addVisualization(Request $request, Routine $routine)
+    {
+
+
+        try {
+
+            $routine->increment('visualizations');
+
+            $routine = Routine::find($routine->id);        
+            $routine->rating = $routine->ratings()->avg('rating');
+            $routine->sets;
+            $bodyparts = [];
+            foreach ($routine->sets as $set) {
+                $muscles = $set->exercise->muscles;
+                foreach ($muscles as $muscle) {
+                    $bodyparts[] = $muscle->bodypart;
+                }
+            }
+            $routine->bodyparts = array_values(array_unique($bodyparts));
+            $routine->categories = $routine->categories()->pluck('categories.id')->toArray();
+            $routine->similar = $routine->similar()->pluck('routines.id')->toArray();
+            $routine->comments;
+
+        
+            return $this->successResponse($routine, 'Visualización añadida con éxito', 201);
+        } catch (Exception $e) {
+            return $this->errorResponse('Ha habido un error añadiendo tu visualización', 500);
+        }
+    }
 }

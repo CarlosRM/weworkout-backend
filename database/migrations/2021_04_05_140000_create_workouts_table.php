@@ -17,7 +17,7 @@ class CreateWorkoutsTable extends Migration
             $table->id();
             $table->timestamps();
             $table->string('name');
-            $table->timestamp('date')->nullable();;
+            $table->datetime('date')->nullable();;
             $table->float('weight');
             $table->float('fat_percentage');
             $table->text('notes');

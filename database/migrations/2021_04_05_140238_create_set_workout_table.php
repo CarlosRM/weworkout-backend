@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSetsWorkoutsTable extends Migration
+class CreateSetWorkoutTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateSetsWorkoutsTable extends Migration
      */
     public function up()
     {
-        Schema::create('sets_workouts', function (Blueprint $table) {
+        Schema::create('set_workout', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->unsignedBigInteger('set_id');
@@ -25,6 +25,8 @@ class CreateSetsWorkoutsTable extends Migration
             $table->foreign('workout_id')
                     ->references('id')
                     ->on('workouts')->onDelete('cascade');
+
+            $table->unsignedInteger('weight');
         
         });
     }
@@ -36,6 +38,6 @@ class CreateSetsWorkoutsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sets_workouts');
+        Schema::dropIfExists('set_workout');
     }
 }

@@ -121,4 +121,12 @@ class User extends Authenticatable implements JWTSubject
             'favourite_routines'
         );
     }
+
+    /**
+     * Get the workouts for the user.
+     */
+    public function workouts()
+    {
+        return $this->hasMany(Workout::class)->with('sets');
+    }
 }

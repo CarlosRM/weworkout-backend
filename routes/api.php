@@ -61,8 +61,7 @@ Route::put('routines/{routine}', 'RoutineController@update')->middleware('jwt');
 Route::delete('routines/{routine}', 'RoutineController@delete')->middleware('jwt');
 Route::post('routines/{routine}/comment', 'RoutineController@addComment')->middleware('jwt');
 Route::post('routines/{routine}/rating', 'RoutineController@addRating')->middleware('jwt');
-
-
+Route::post('routines/{routine}/visualization', 'RoutineController@addVisualization')->middleware('jwt');
 
 // Exercise Routes
 Route::get('exercises', 'ExerciseController@index')->middleware('jwt');
@@ -77,3 +76,10 @@ Route::get('categories/{category}', 'CategoryController@show')->middleware('jwt'
 Route::post('categories', 'CategoryController@store')->middleware('jwt');
 Route::put('categories/{category}', 'CategoryController@update')->middleware('jwt');
 Route::delete('categories/{category}', 'CategoryController@delete')->middleware('jwt');
+
+// Workout Routes
+Route::get('workouts', 'WorkoutController@index')->middleware('jwt');
+Route::get('workouts/{workout}', 'WorkoutController@show')->middleware('jwt');
+Route::post('workouts', 'WorkoutController@store')->middleware('jwt');
+Route::put('workouts/{workout}', 'WorkoutController@update')->middleware('jwt');
+Route::delete('workouts/{workout}', 'WorkoutController@delete')->middleware('jwt');
