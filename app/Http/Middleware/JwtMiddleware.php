@@ -21,13 +21,13 @@ class JwtMiddleware
             $user = JWTAuth::parseToken()->authenticate();
         } catch (\Exception $e) {
             if($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
-                return response()->json(["msg" => "Token Expirado"]);
+                return response()->json(["msg" => "Token Expirado"], 401);
             }
             if($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) {
-                return response()->json(["msg" => "Token Inválido"]);
+                return response()->json(["msg" => "Token Inválido"], 401);
             }
             if ($e instanceof \Tymon\JWTAuth\Exceptions\JWTException) { 
-                return response()->json(["msg" => "Se requiere un token"]);
+                return response()->json(["msg" => "Se requiere un token"], 401);
             }
         }
         return $next($request);

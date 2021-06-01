@@ -45,7 +45,7 @@ class ExerciseSeeder extends Seeder
             [
                 'name' => 'Flexión Diamante',
                 'muscles' => ['Pecho', 'Tríceps', 'Abdominales Superiores', 'Hombros'],
-                'videoURL' => 'https://www.youtube.com/embed/d-HOjHGRq-o&ab_channel=OPEXFitness'
+                'videoURL' => 'https://www.youtube.com/embed/d-HOjHGRq-o'
             ],
             [
                 'name' => 'Flexión Arquero',

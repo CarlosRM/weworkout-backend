@@ -45,13 +45,12 @@ Route::get('users', 'UserController@index')->middleware('jwt');
 Route::get('users/{user}', 'UserController@show')->middleware('jwt', 'belongsToUser');
 Route::post('users', 'UserController@store');
 Route::put('users/{user}', 'UserController@update')->middleware('jwt', 'belongsToUser');
-Route::delete('users/{user}', 'UserController@delete')->middleware('jwt', 'belongsToUser');
 
-Route::get('users/{user}/addFavorite/{routine}', 'UserController@addFavorite')->middleware('jwt', 'belongsToUser');
-Route::get('users/{user}/removeFavorite/{routine}', 'UserController@removeFavorite')->middleware('jwt', 'belongsToUser');
+Route::post('users/{user}/addFavorite/{routine}', 'UserController@addFavorite')->middleware('jwt', 'belongsToUser');
+Route::post('users/{user}/removeFavorite/{routine}', 'UserController@removeFavorite')->middleware('jwt', 'belongsToUser');
 
-Route::post('users/{user}/follow/{followee}', 'UserController@follow')->middleware('jwt');
-Route::post('users/{user}/unfollow/{followee}', 'UserController@unfollow')->middleware('jwt');
+Route::post('users/{user}/follow/{followee}', 'UserController@follow')->middleware('jwt', 'belongsToUser');
+Route::post('users/{user}/unfollow/{followee}', 'UserController@unfollow')->middleware('jwt', 'belongsToUser');
 
 // Routine Routes
 Route::get('routines', 'RoutineController@index')->middleware('jwt');
@@ -65,17 +64,9 @@ Route::post('routines/{routine}/visualization', 'RoutineController@addVisualizat
 
 // Exercise Routes
 Route::get('exercises', 'ExerciseController@index')->middleware('jwt');
-Route::get('exercises/{exercise}', 'ExerciseController@show')->middleware('jwt');
-Route::post('exercises', 'ExerciseController@store')->middleware('jwt');
-Route::put('exercises/{exercise}', 'ExerciseController@update')->middleware('jwt');
-Route::delete('exercises/{exercise}', 'ExerciseController@delete')->middleware('jwt');
 
 // Category Routes
 Route::get('categories', 'CategoryController@index')->middleware('jwt');
-Route::get('categories/{category}', 'CategoryController@show')->middleware('jwt');
-Route::post('categories', 'CategoryController@store')->middleware('jwt');
-Route::put('categories/{category}', 'CategoryController@update')->middleware('jwt');
-Route::delete('categories/{category}', 'CategoryController@delete')->middleware('jwt');
 
 // Workout Routes
 Route::get('workouts', 'WorkoutController@index')->middleware('jwt');

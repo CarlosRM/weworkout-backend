@@ -1,0 +1,2341 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "WeWorkout API",
+        "description": "Documentación de la API del backend de la aplicación WeWorkout. La mayoría de llamadas utilizan autenticación mediante JWT. Se incluyen ejemplos de request y de response.",
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "http://127.0.0.1:8000"
+        }
+    ],
+    "paths": {
+        "/api/auth/login": {
+            "post": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Inicia sesión",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "email": "ironman@avengers.com",
+                                    "password": "PepperPotts<3"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK. Devuelve el token y datos del usuario",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYyMjU0NzU5MywiZXhwIjoxNjIyNTUxMTkzLCJuYmYiOjE2MjI1NDc1OTMsImp0aSI6ImZsTDhVeVptc0pncFlIZDMiLCJzdWIiOjEsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.qHb0koGvpInuyMlVWyazc7DxgFALfX0uFLzpi1H4KDg",
+                                    "token_type": "bearer",
+                                    "expires_in": 3600,
+                                    "user": {
+                                        "id": 1,
+                                        "name": "Carlos",
+                                        "email": "ironman@avengers.com",
+                                        "email_verified_at": "2021-05-31T21:11:08.000000Z",
+                                        "birthdate": "1996-05-17T00:00:00.000000Z",
+                                        "genre": "Hombre",
+                                        "description": "Desc ejemplo",
+                                        "created_at": "2021-05-31T21:11:08.000000Z",
+                                        "updated_at": "2021-06-01T08:19:45.000000Z",
+                                        "favourite_routines": [
+                                            5,
+                                            31
+                                        ],
+                                        "followers": [
+                                            6
+                                        ],
+                                        "followees": [],
+                                        "routines": [
+                                            4,
+                                            22,
+                                            27,
+                                            35,
+                                            38,
+                                            41
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Credenciales incorrectas"
+                    }
+                }
+            }
+        },
+        "/api/auth/me": {
+            "post": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Obtiene información del usuario",
+                "responses": {
+                    "200": {
+                        "description": "OK. Devuelve datos del usuario",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "user": {
+                                        "id": 1,
+                                        "name": "Carlos",
+                                        "email": "ironman@avengers.com",
+                                        "email_verified_at": "2021-05-31T21:11:08.000000Z",
+                                        "birthdate": "1996-05-17T00:00:00.000000Z",
+                                        "genre": "Hombre",
+                                        "description": "Desc ejemplo",
+                                        "created_at": "2021-05-31T21:11:08.000000Z",
+                                        "updated_at": "2021-06-01T08:19:45.000000Z",
+                                        "favourite_routines": [
+                                            5,
+                                            31
+                                        ],
+                                        "followers": [
+                                            6
+                                        ],
+                                        "followees": [],
+                                        "routines": [
+                                            4,
+                                            22,
+                                            27,
+                                            35,
+                                            38,
+                                            41
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/auth/logout": {
+            "post": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Cierra sesión",
+                "responses": {
+                    "200": {
+                        "description": "OK. Cierra sesión",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "message": "Sesión cerrada con éxito"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/categories": {
+            "get": {
+                "tags": [
+                    "Categorías"
+                ],
+                "summary": "Obtener categories",
+                "operationId": "App\\Http\\Controllers\\CategoryController::index",
+                "responses": {
+                    "200": {
+                        "description": "Obtener todas las categorías.",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "status": 200,
+                                    "message": 200,
+                                    "data": [
+                                        {
+                                            "id": 1,
+                                            "created_at": "2021-05-31T21:11:07.000000Z",
+                                            "updated_at": "2021-05-31T21:11:07.000000Z",
+                                            "name": "Principiante"
+                                        },
+                                        {
+                                            "id": 2,
+                                            "created_at": "2021-05-31T21:11:07.000000Z",
+                                            "updated_at": "2021-05-31T21:11:07.000000Z",
+                                            "name": "Intermedio"
+                                        },
+                                        {
+                                            "id": 3,
+                                            "created_at": "2021-05-31T21:11:07.000000Z",
+                                            "updated_at": "2021-05-31T21:11:07.000000Z",
+                                            "name": "Avanzado"
+                                        },
+                                        {
+                                            "id": 4,
+                                            "created_at": "2021-05-31T21:11:07.000000Z",
+                                            "updated_at": "2021-05-31T21:11:07.000000Z",
+                                            "name": "Ligero"
+                                        },
+                                        {
+                                            "id": 5,
+                                            "created_at": "2021-05-31T21:11:07.000000Z",
+                                            "updated_at": "2021-05-31T21:11:07.000000Z",
+                                            "name": "Intenso"
+                                        },
+                                        {
+                                            "id": 6,
+                                            "created_at": "2021-05-31T21:11:07.000000Z",
+                                            "updated_at": "2021-05-31T21:11:07.000000Z",
+                                            "name": "Rápido"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Ha ocurrido un error."
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/exercises": {
+            "get": {
+                "tags": [
+                    "Ejercicios"
+                ],
+                "summary": "Obtener ejercicios",
+                "operationId": "App\\Http\\Controllers\\ExerciseController::index",
+                "responses": {
+                    "200": {
+                        "description": "Obtener todos los ejercicios.",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "status": 200,
+                                    "message": 200,
+                                    "data": [
+                                        {
+                                            "id": 1,
+                                            "created_at": "2021-05-31T21:11:08.000000Z",
+                                            "updated_at": "2021-05-31T21:11:08.000000Z",
+                                            "name": "Flexión",
+                                            "description": "Dolore enim rerum voluptatem distinctio ipsum accusamus eum fugit. Et ut laborum est quaerat quia quia mollitia quod. Iure voluptate sed asperiores omnis sunt perferendis dolores.",
+                                            "videoURL": "https://www.youtube.com/embed/Olkjnp6-2Rs",
+                                            "similar": [
+                                                4,
+                                                8,
+                                                11
+                                            ],
+                                            "muscles": [
+                                                {
+                                                    "id": 2,
+                                                    "created_at": "2021-05-31T21:11:07.000000Z",
+                                                    "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                    "name": "Tríceps",
+                                                    "bodypart": "Brazo",
+                                                    "pivot": {
+                                                        "exercise_id": 1,
+                                                        "muscle_id": 2
+                                                    }
+                                                },
+                                                {
+                                                    "id": 9,
+                                                    "created_at": "2021-05-31T21:11:07.000000Z",
+                                                    "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                    "name": "Abdominales Superiores",
+                                                    "bodypart": "Torso",
+                                                    "pivot": {
+                                                        "exercise_id": 1,
+                                                        "muscle_id": 9
+                                                    }
+                                                },
+                                                {
+                                                    "id": 11,
+                                                    "created_at": "2021-05-31T21:11:07.000000Z",
+                                                    "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                    "name": "Pecho",
+                                                    "bodypart": "Torso",
+                                                    "pivot": {
+                                                        "exercise_id": 1,
+                                                        "muscle_id": 11
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Ha ocurrido un error."
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/routines": {
+            "get": {
+                "tags": [
+                    "Rutinas"
+                ],
+                "summary": "Obtener rutinas",
+                "operationId": "App\\Http\\Controllers\\RoutineController::index",
+                "responses": {
+                    "200": {
+                        "description": "Obtener todas las rutinas.",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "status": 200,
+                                    "message": 200,
+                                    "data": [
+                                        {
+                                            "id": 1,
+                                            "created_at": "2021-05-31T21:11:08.000000Z",
+                                            "updated_at": "2021-05-31T21:11:08.000000Z",
+                                            "user_id": 1,
+                                            "name": "Ipsum qui ut perspiciatis.",
+                                            "description": "Deserunt sit voluptatem id ea repudiandae veritatis voluptate. Enim nostrum enim veritatis nihil facere distinctio. Enim repellat et rerum nisi ut. Molestiae eum laborum aliquid voluptate sed distinctio. Qui odit aliquam voluptas quisquam natus. Delectus temporibus atque eaque voluptatem. Nesciunt magnam qui voluptates numquam ipsum et. Ducimus possimus suscipit ut fugit est. Est sit vel consequatur aut repudiandae pariatur corporis. Vel esse commodi voluptas beatae ut eum voluptatem. Incidunt dicta et ad velit maxime. Minus aspernatur culpa cumque et saepe distinctio. Maxime dolorum autem consectetur iste sed id. Voluptatum consequatur ea eius placeat. Sunt commodi omnis est quasi. Voluptatum voluptatem consectetur voluptatem itaque dignissimos repudiandae. Reiciendis dolorem qui est magnam deserunt ipsum ut. Nobis quaerat eos voluptatem cumque. Neque libero reprehenderit a.",
+                                            "visualizations": 1823,
+                                            "rating": 3,
+                                            "sets": [
+                                                {
+                                                    "id": 30,
+                                                    "created_at": "2021-05-31T21:11:08.000000Z",
+                                                    "updated_at": "2021-05-31T21:11:08.000000Z",
+                                                    "repetitions": 30,
+                                                    "exercise_id": 1,
+                                                    "pivot": {
+                                                        "routine_id": 1,
+                                                        "set_id": 30
+                                                    },
+                                                    "exercise": {
+                                                        "id": 1,
+                                                        "created_at": "2021-05-31T21:11:08.000000Z",
+                                                        "updated_at": "2021-05-31T21:11:08.000000Z",
+                                                        "name": "Flexión",
+                                                        "description": "Dolore enim rerum voluptatem distinctio ipsum accusamus eum fugit. Et ut laborum est quaerat quia quia mollitia quod. Iure voluptate sed asperiores omnis sunt perferendis dolores.",
+                                                        "videoURL": "https://www.youtube.com/embed/Olkjnp6-2Rs",
+                                                        "muscles": [
+                                                            {
+                                                                "id": 2,
+                                                                "created_at": "2021-05-31T21:11:07.000000Z",
+                                                                "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                                "name": "Tríceps",
+                                                                "bodypart": "Brazo",
+                                                                "pivot": {
+                                                                    "exercise_id": 1,
+                                                                    "muscle_id": 2
+                                                                }
+                                                            },
+                                                            {
+                                                                "id": 9,
+                                                                "created_at": "2021-05-31T21:11:07.000000Z",
+                                                                "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                                "name": "Abdominales Superiores",
+                                                                "bodypart": "Torso",
+                                                                "pivot": {
+                                                                    "exercise_id": 1,
+                                                                    "muscle_id": 9
+                                                                }
+                                                            },
+                                                            {
+                                                                "id": 11,
+                                                                "created_at": "2021-05-31T21:11:07.000000Z",
+                                                                "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                                "name": "Pecho",
+                                                                "bodypart": "Torso",
+                                                                "pivot": {
+                                                                    "exercise_id": 1,
+                                                                    "muscle_id": 11
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "id": 87,
+                                                    "created_at": "2021-05-31T21:11:08.000000Z",
+                                                    "updated_at": "2021-05-31T21:11:08.000000Z",
+                                                    "repetitions": 27,
+                                                    "exercise_id": 3,
+                                                    "pivot": {
+                                                        "routine_id": 1,
+                                                        "set_id": 87
+                                                    },
+                                                    "exercise": {
+                                                        "id": 3,
+                                                        "created_at": "2021-05-31T21:11:08.000000Z",
+                                                        "updated_at": "2021-05-31T21:11:08.000000Z",
+                                                        "name": "Flexión Arquero",
+                                                        "description": "Veritatis ut amet omnis et et in sit. Dolor quae dignissimos quia aspernatur adipisci id. Ad aut fugit praesentium quibusdam.",
+                                                        "videoURL": "https://www.youtube.com/embed/3wZuPAjC12M",
+                                                        "muscles": [
+                                                            {
+                                                                "id": 2,
+                                                                "created_at": "2021-05-31T21:11:07.000000Z",
+                                                                "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                                "name": "Tríceps",
+                                                                "bodypart": "Brazo",
+                                                                "pivot": {
+                                                                    "exercise_id": 3,
+                                                                    "muscle_id": 2
+                                                                }
+                                                            },
+                                                            {
+                                                                "id": 9,
+                                                                "created_at": "2021-05-31T21:11:07.000000Z",
+                                                                "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                                "name": "Abdominales Superiores",
+                                                                "bodypart": "Torso",
+                                                                "pivot": {
+                                                                    "exercise_id": 3,
+                                                                    "muscle_id": 9
+                                                                }
+                                                            },
+                                                            {
+                                                                "id": 11,
+                                                                "created_at": "2021-05-31T21:11:07.000000Z",
+                                                                "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                                "name": "Pecho",
+                                                                "bodypart": "Torso",
+                                                                "pivot": {
+                                                                    "exercise_id": 3,
+                                                                    "muscle_id": 11
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "id": 121,
+                                                    "created_at": "2021-05-31T21:11:08.000000Z",
+                                                    "updated_at": "2021-05-31T21:11:08.000000Z",
+                                                    "repetitions": 1,
+                                                    "exercise_id": 5,
+                                                    "pivot": {
+                                                        "routine_id": 1,
+                                                        "set_id": 121
+                                                    },
+                                                    "exercise": {
+                                                        "id": 5,
+                                                        "created_at": "2021-05-31T21:11:08.000000Z",
+                                                        "updated_at": "2021-05-31T21:11:08.000000Z",
+                                                        "name": "Dominada Supina",
+                                                        "description": "Quasi ipsam adipisci mollitia temporibus id fugiat facilis. Consequatur omnis aut est et ab dolor. Dolore similique nam laborum quisquam nostrum omnis.",
+                                                        "videoURL": "https://www.youtube.com/embed/uHheC0C4T3w",
+                                                        "muscles": [
+                                                            {
+                                                                "id": 1,
+                                                                "created_at": "2021-05-31T21:11:07.000000Z",
+                                                                "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                                "name": "Bíceps",
+                                                                "bodypart": "Brazo",
+                                                                "pivot": {
+                                                                    "exercise_id": 5,
+                                                                    "muscle_id": 1
+                                                                }
+                                                            },
+                                                            {
+                                                                "id": 3,
+                                                                "created_at": "2021-05-31T21:11:07.000000Z",
+                                                                "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                                "name": "Hombros",
+                                                                "bodypart": "Brazo",
+                                                                "pivot": {
+                                                                    "exercise_id": 5,
+                                                                    "muscle_id": 3
+                                                                }
+                                                            },
+                                                            {
+                                                                "id": 11,
+                                                                "created_at": "2021-05-31T21:11:07.000000Z",
+                                                                "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                                "name": "Pecho",
+                                                                "bodypart": "Torso",
+                                                                "pivot": {
+                                                                    "exercise_id": 5,
+                                                                    "muscle_id": 11
+                                                                }
+                                                            },
+                                                            {
+                                                                "id": 12,
+                                                                "created_at": "2021-05-31T21:11:07.000000Z",
+                                                                "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                                "name": "Dorsales",
+                                                                "bodypart": "Espalda",
+                                                                "pivot": {
+                                                                    "exercise_id": 5,
+                                                                    "muscle_id": 12
+                                                                }
+                                                            },
+                                                            {
+                                                                "id": 14,
+                                                                "created_at": "2021-05-31T21:11:07.000000Z",
+                                                                "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                                "name": "Trapecios",
+                                                                "bodypart": "Espalda",
+                                                                "pivot": {
+                                                                    "exercise_id": 5,
+                                                                    "muscle_id": 14
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "id": 127,
+                                                    "created_at": "2021-05-31T21:11:08.000000Z",
+                                                    "updated_at": "2021-05-31T21:11:08.000000Z",
+                                                    "repetitions": 7,
+                                                    "exercise_id": 5,
+                                                    "pivot": {
+                                                        "routine_id": 1,
+                                                        "set_id": 127
+                                                    },
+                                                    "exercise": {
+                                                        "id": 5,
+                                                        "created_at": "2021-05-31T21:11:08.000000Z",
+                                                        "updated_at": "2021-05-31T21:11:08.000000Z",
+                                                        "name": "Dominada Supina",
+                                                        "description": "Quasi ipsam adipisci mollitia temporibus id fugiat facilis. Consequatur omnis aut est et ab dolor. Dolore similique nam laborum quisquam nostrum omnis.",
+                                                        "videoURL": "https://www.youtube.com/embed/uHheC0C4T3w",
+                                                        "muscles": [
+                                                            {
+                                                                "id": 1,
+                                                                "created_at": "2021-05-31T21:11:07.000000Z",
+                                                                "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                                "name": "Bíceps",
+                                                                "bodypart": "Brazo",
+                                                                "pivot": {
+                                                                    "exercise_id": 5,
+                                                                    "muscle_id": 1
+                                                                }
+                                                            },
+                                                            {
+                                                                "id": 3,
+                                                                "created_at": "2021-05-31T21:11:07.000000Z",
+                                                                "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                                "name": "Hombros",
+                                                                "bodypart": "Brazo",
+                                                                "pivot": {
+                                                                    "exercise_id": 5,
+                                                                    "muscle_id": 3
+                                                                }
+                                                            },
+                                                            {
+                                                                "id": 11,
+                                                                "created_at": "2021-05-31T21:11:07.000000Z",
+                                                                "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                                "name": "Pecho",
+                                                                "bodypart": "Torso",
+                                                                "pivot": {
+                                                                    "exercise_id": 5,
+                                                                    "muscle_id": 11
+                                                                }
+                                                            },
+                                                            {
+                                                                "id": 12,
+                                                                "created_at": "2021-05-31T21:11:07.000000Z",
+                                                                "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                                "name": "Dorsales",
+                                                                "bodypart": "Espalda",
+                                                                "pivot": {
+                                                                    "exercise_id": 5,
+                                                                    "muscle_id": 12
+                                                                }
+                                                            },
+                                                            {
+                                                                "id": 14,
+                                                                "created_at": "2021-05-31T21:11:07.000000Z",
+                                                                "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                                "name": "Trapecios",
+                                                                "bodypart": "Espalda",
+                                                                "pivot": {
+                                                                    "exercise_id": 5,
+                                                                    "muscle_id": 14
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "id": 167,
+                                                    "created_at": "2021-05-31T21:11:08.000000Z",
+                                                    "updated_at": "2021-05-31T21:11:08.000000Z",
+                                                    "repetitions": 17,
+                                                    "exercise_id": 6,
+                                                    "pivot": {
+                                                        "routine_id": 1,
+                                                        "set_id": 167
+                                                    },
+                                                    "exercise": {
+                                                        "id": 6,
+                                                        "created_at": "2021-05-31T21:11:08.000000Z",
+                                                        "updated_at": "2021-05-31T21:11:08.000000Z",
+                                                        "name": "Sentadilla",
+                                                        "description": "Quae earum necessitatibus illum sapiente architecto et. Autem dolore magni nostrum non.",
+                                                        "videoURL": "https://www.youtube.com/embed/Zqc_lc93hak",
+                                                        "muscles": [
+                                                            {
+                                                                "id": 5,
+                                                                "created_at": "2021-05-31T21:11:07.000000Z",
+                                                                "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                                "name": "Cuádriceps",
+                                                                "bodypart": "Pierna",
+                                                                "pivot": {
+                                                                    "exercise_id": 6,
+                                                                    "muscle_id": 5
+                                                                }
+                                                            },
+                                                            {
+                                                                "id": 6,
+                                                                "created_at": "2021-05-31T21:11:07.000000Z",
+                                                                "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                                "name": "Isquiotibiales",
+                                                                "bodypart": "Pierna",
+                                                                "pivot": {
+                                                                    "exercise_id": 6,
+                                                                    "muscle_id": 6
+                                                                }
+                                                            },
+                                                            {
+                                                                "id": 7,
+                                                                "created_at": "2021-05-31T21:11:07.000000Z",
+                                                                "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                                "name": "Glúteos",
+                                                                "bodypart": "Pierna",
+                                                                "pivot": {
+                                                                    "exercise_id": 6,
+                                                                    "muscle_id": 7
+                                                                }
+                                                            },
+                                                            {
+                                                                "id": 8,
+                                                                "created_at": "2021-05-31T21:11:07.000000Z",
+                                                                "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                                "name": "Gemelos",
+                                                                "bodypart": "Pierna",
+                                                                "pivot": {
+                                                                    "exercise_id": 6,
+                                                                    "muscle_id": 8
+                                                                }
+                                                            },
+                                                            {
+                                                                "id": 9,
+                                                                "created_at": "2021-05-31T21:11:07.000000Z",
+                                                                "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                                "name": "Abdominales Superiores",
+                                                                "bodypart": "Torso",
+                                                                "pivot": {
+                                                                    "exercise_id": 6,
+                                                                    "muscle_id": 9
+                                                                }
+                                                            },
+                                                            {
+                                                                "id": 10,
+                                                                "created_at": "2021-05-31T21:11:07.000000Z",
+                                                                "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                                "name": "Abdominales Inferiores",
+                                                                "bodypart": "Torso",
+                                                                "pivot": {
+                                                                    "exercise_id": 6,
+                                                                    "muscle_id": 10
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            ],
+                                            "bodyparts": [
+                                                "Brazo",
+                                                "Torso",
+                                                "Espalda",
+                                                "Pierna"
+                                            ],
+                                            "categories": [
+                                                1,
+                                                2,
+                                                5
+                                            ],
+                                            "similar": [
+                                                16
+                                            ],
+                                            "comments": [
+                                                {
+                                                    "id": 37,
+                                                    "created_at": "2021-05-31T21:11:10.000000Z",
+                                                    "updated_at": "2021-05-31T21:11:10.000000Z",
+                                                    "content": "Quo laboriosam quasi commodi sunt hic. Ut alias saepe animi vel. Ut eveniet possimus non omnis.",
+                                                    "user_id": 4,
+                                                    "routine_id": 1
+                                                }
+                                            ],
+                                            "ratings": [
+                                                {
+                                                    "id": 22,
+                                                    "created_at": "2021-05-31T21:11:10.000000Z",
+                                                    "updated_at": "2021-05-31T21:11:10.000000Z",
+                                                    "rating": 3,
+                                                    "user_id": 3,
+                                                    "routine_id": 1
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Ha ocurrido un error."
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Rutinas"
+                ],
+                "summary": "Crear Rutina",
+                "operationId": "App\\Http\\Controllers\\RoutineController::store",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "example": {
+                                    "user_id": 1,
+                                    "name": "Rutina de prueba",
+                                    "description": "Ojalá funcione",
+                                    "visualizations": 0,
+                                    "sets": [
+                                        {
+                                            "exercise": 1,
+                                            "repetitions": 10
+                                        }
+                                    ],
+                                    "categories": [
+                                        1
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK. Crea una rutina",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "status": 201,
+                                    "message": "Rutina creada con éxito",
+                                    "data": {
+                                        "user_id": 1,
+                                        "name": "Rutina de prueba",
+                                        "description": "Ojalá funcione",
+                                        "visualizations": 0,
+                                        "updated_at": "2021-06-01T10:04:52.000000Z",
+                                        "created_at": "2021-06-01T10:04:52.000000Z",
+                                        "id": 41,
+                                        "rating": null,
+                                        "bodyparts": [
+                                            "Brazo",
+                                            "Torso"
+                                        ],
+                                        "categories": [
+                                            1
+                                        ],
+                                        "similar": [],
+                                        "sets": [
+                                            {
+                                                "id": 10,
+                                                "created_at": "2021-05-31T21:11:08.000000Z",
+                                                "updated_at": "2021-05-31T21:11:08.000000Z",
+                                                "repetitions": 10,
+                                                "exercise_id": 1,
+                                                "pivot": {
+                                                    "routine_id": 41,
+                                                    "set_id": 10
+                                                },
+                                                "exercise": {
+                                                    "id": 1,
+                                                    "created_at": "2021-05-31T21:11:08.000000Z",
+                                                    "updated_at": "2021-05-31T21:11:08.000000Z",
+                                                    "name": "Flexión",
+                                                    "description": "Dolore enim rerum voluptatem distinctio ipsum accusamus eum fugit. Et ut laborum est quaerat quia quia mollitia quod. Iure voluptate sed asperiores omnis sunt perferendis dolores.",
+                                                    "videoURL": "https://www.youtube.com/embed/Olkjnp6-2Rs",
+                                                    "muscles": [
+                                                        {
+                                                            "id": 2,
+                                                            "created_at": "2021-05-31T21:11:07.000000Z",
+                                                            "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                            "name": "Tríceps",
+                                                            "bodypart": "Brazo",
+                                                            "pivot": {
+                                                                "exercise_id": 1,
+                                                                "muscle_id": 2
+                                                            }
+                                                        },
+                                                        {
+                                                            "id": 9,
+                                                            "created_at": "2021-05-31T21:11:07.000000Z",
+                                                            "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                            "name": "Abdominales Superiores",
+                                                            "bodypart": "Torso",
+                                                            "pivot": {
+                                                                "exercise_id": 1,
+                                                                "muscle_id": 9
+                                                            }
+                                                        },
+                                                        {
+                                                            "id": 11,
+                                                            "created_at": "2021-05-31T21:11:07.000000Z",
+                                                            "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                            "name": "Pecho",
+                                                            "bodypart": "Torso",
+                                                            "pivot": {
+                                                                "exercise_id": 1,
+                                                                "muscle_id": 11
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        ],
+                                        "comments": []
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error de validación"
+                    },
+                    "401": {
+                        "description": "No autorizado"
+                    },
+                    "500": {
+                        "description": "Error creando la rutina"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/routines/{id}": {
+            "put": {
+                "tags": [
+                    "Rutinas"
+                ],
+                "summary": "Actualizar Rutina",
+                "operationId": "App\\Http\\Controllers\\RoutineController::update",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la rutina",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        "example": "1"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "example": {
+                                    "user_id": 1,
+                                    "name": "Rutina de prueba",
+                                    "description": "Ojalá funcione",
+                                    "visualizations": 0,
+                                    "sets": [
+                                        {
+                                            "exercise": 1,
+                                            "repetitions": 10
+                                        }
+                                    ],
+                                    "categories": [
+                                        1
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "OK. Actualiza la rutina",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "status": 201,
+                                    "message": "Rutina actualizada con éxito",
+                                    "data": {
+                                        "id": 1,
+                                        "created_at": "2021-05-31T21:11:08.000000Z",
+                                        "updated_at": "2021-06-01T10:11:31.000000Z",
+                                        "user_id": 1,
+                                        "name": "Rutina de prueba",
+                                        "description": "Update Test",
+                                        "visualizations": 0,
+                                        "rating": 3,
+                                        "bodyparts": [
+                                            "Brazo",
+                                            "Torso"
+                                        ],
+                                        "categories": [
+                                            1
+                                        ],
+                                        "similar": [
+                                            16
+                                        ],
+                                        "sets": [
+                                            {
+                                                "id": 10,
+                                                "created_at": "2021-05-31T21:11:08.000000Z",
+                                                "updated_at": "2021-05-31T21:11:08.000000Z",
+                                                "repetitions": 10,
+                                                "exercise_id": 1,
+                                                "pivot": {
+                                                    "routine_id": 1,
+                                                    "set_id": 10
+                                                },
+                                                "exercise": {
+                                                    "id": 1,
+                                                    "created_at": "2021-05-31T21:11:08.000000Z",
+                                                    "updated_at": "2021-05-31T21:11:08.000000Z",
+                                                    "name": "Flexión",
+                                                    "description": "Dolore enim rerum voluptatem distinctio ipsum accusamus eum fugit. Et ut laborum est quaerat quia quia mollitia quod. Iure voluptate sed asperiores omnis sunt perferendis dolores.",
+                                                    "videoURL": "https://www.youtube.com/embed/Olkjnp6-2Rs",
+                                                    "muscles": [
+                                                        {
+                                                            "id": 2,
+                                                            "created_at": "2021-05-31T21:11:07.000000Z",
+                                                            "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                            "name": "Tríceps",
+                                                            "bodypart": "Brazo",
+                                                            "pivot": {
+                                                                "exercise_id": 1,
+                                                                "muscle_id": 2
+                                                            }
+                                                        },
+                                                        {
+                                                            "id": 9,
+                                                            "created_at": "2021-05-31T21:11:07.000000Z",
+                                                            "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                            "name": "Abdominales Superiores",
+                                                            "bodypart": "Torso",
+                                                            "pivot": {
+                                                                "exercise_id": 1,
+                                                                "muscle_id": 9
+                                                            }
+                                                        },
+                                                        {
+                                                            "id": 11,
+                                                            "created_at": "2021-05-31T21:11:07.000000Z",
+                                                            "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                            "name": "Pecho",
+                                                            "bodypart": "Torso",
+                                                            "pivot": {
+                                                                "exercise_id": 1,
+                                                                "muscle_id": 11
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        ],
+                                        "comments": [
+                                            {
+                                                "id": 37,
+                                                "created_at": "2021-05-31T21:11:10.000000Z",
+                                                "updated_at": "2021-05-31T21:11:10.000000Z",
+                                                "content": "Quo laboriosam quasi commodi sunt hic. Ut alias saepe animi vel. Ut eveniet possimus non omnis.",
+                                                "user_id": 4,
+                                                "routine_id": 1
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error de validación"
+                    },
+                    "401": {
+                        "description": "No autorizado"
+                    },
+                    "500": {
+                        "description": "Error actualizando la rutina"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Rutinas"
+                ],
+                "summary": "Borrar rutina",
+                "operationId": "App\\Http\\Controllers\\RoutineController::delete",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la rutina",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK. Borra una rutina",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "status": 200,
+                                    "message": "Rutina eliminada con éxito",
+                                    "data": {
+                                        "id": 1
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autorizado"
+                    },
+                    "500": {
+                        "description": "Error"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/routines/{id}/comment": {
+            "post": {
+                "tags": [
+                    "Rutinas"
+                ],
+                "summary": "Añadir comentario",
+                "operationId": "App\\Http\\Controllers\\RoutineController::addComment",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "example": {
+                                    "user_id": 1,
+                                    "routine_id": 5,
+                                    "content": "Este es un comentario de prueba"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "OK. Añade un comentario. Devuelve rutina con nuevo comentario",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "status": 201,
+                                    "message": "Comentario añadido con éxito",
+                                    "data": {
+                                        "id": 5,
+                                        "created_at": "2021-05-31T21:11:08.000000Z",
+                                        "updated_at": "2021-05-31T21:11:08.000000Z",
+                                        "user_id": 8,
+                                        "name": "Placeat et quam placeat eum.",
+                                        "description": "Et non excepturi distinctio illo et animi ut et. Molestias sunt quis quas illo tempore culpa. Ea non quae nesciunt sunt doloribus laboriosam suscipit. Ex vel corrupti voluptas dolor laborum unde et. Dolore provident consequatur est corrupti voluptates vero laudantium. Qui incidunt et vel sint dicta et est. Incidunt maiores et iure cupiditate ducimus facilis ea. Temporibus eum velit dolorum optio nam. Quibusdam corporis soluta adipisci eos ea voluptatem aut. Aliquam et harum sed aut dolorem odit ut. Alias explicabo tenetur adipisci nihil dolores. Voluptatibus debitis perferendis voluptatem corporis accusantium voluptas quo nihil. Aut aspernatur possimus ut provident tempora temporibus porro. Adipisci quibusdam sit id aut et vero velit. Consectetur architecto aut quia ut eos. Et consequuntur delectus libero dignissimos. Quia nulla tenetur impedit qui rerum. Cupiditate necessitatibus exercitationem ea praesentium. Praesentium nisi quae veniam nisi sint.",
+                                        "visualizations": 1511,
+                                        "rating": 2,
+                                        "bodyparts": [
+                                            "Brazo",
+                                            "Espalda"
+                                        ],
+                                        "categories": [
+                                            1,
+                                            2,
+                                            4
+                                        ],
+                                        "similar": [
+                                            4
+                                        ],
+                                        "sets": [
+                                            {
+                                                "id": 266,
+                                                "created_at": "2021-05-31T21:11:08.000000Z",
+                                                "updated_at": "2021-05-31T21:11:08.000000Z",
+                                                "repetitions": 26,
+                                                "exercise_id": 9,
+                                                "pivot": {
+                                                    "routine_id": 5,
+                                                    "set_id": 266
+                                                },
+                                                "exercise": {
+                                                    "id": 9,
+                                                    "created_at": "2021-05-31T21:11:08.000000Z",
+                                                    "updated_at": "2021-05-31T21:11:08.000000Z",
+                                                    "name": "Remo",
+                                                    "description": "Numquam nisi et non dignissimos. Quibusdam et qui exercitationem saepe iste. Aliquam eveniet voluptatem quas exercitationem. Fugiat quia eveniet iure sint est natus.",
+                                                    "videoURL": "https://www.youtube.com/embed/xQNrFHEMhI4",
+                                                    "muscles": [
+                                                        {
+                                                            "id": 1,
+                                                            "created_at": "2021-05-31T21:11:07.000000Z",
+                                                            "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                            "name": "Bíceps",
+                                                            "bodypart": "Brazo",
+                                                            "pivot": {
+                                                                "exercise_id": 9,
+                                                                "muscle_id": 1
+                                                            }
+                                                        },
+                                                        {
+                                                            "id": 2,
+                                                            "created_at": "2021-05-31T21:11:07.000000Z",
+                                                            "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                            "name": "Tríceps",
+                                                            "bodypart": "Brazo",
+                                                            "pivot": {
+                                                                "exercise_id": 9,
+                                                                "muscle_id": 2
+                                                            }
+                                                        },
+                                                        {
+                                                            "id": 3,
+                                                            "created_at": "2021-05-31T21:11:07.000000Z",
+                                                            "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                            "name": "Hombros",
+                                                            "bodypart": "Brazo",
+                                                            "pivot": {
+                                                                "exercise_id": 9,
+                                                                "muscle_id": 3
+                                                            }
+                                                        },
+                                                        {
+                                                            "id": 12,
+                                                            "created_at": "2021-05-31T21:11:07.000000Z",
+                                                            "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                            "name": "Dorsales",
+                                                            "bodypart": "Espalda",
+                                                            "pivot": {
+                                                                "exercise_id": 9,
+                                                                "muscle_id": 12
+                                                            }
+                                                        },
+                                                        {
+                                                            "id": 14,
+                                                            "created_at": "2021-05-31T21:11:07.000000Z",
+                                                            "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                            "name": "Trapecios",
+                                                            "bodypart": "Espalda",
+                                                            "pivot": {
+                                                                "exercise_id": 9,
+                                                                "muscle_id": 14
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        ],
+                                        "comments": [
+                                            {
+                                                "id": 4,
+                                                "created_at": "2021-05-31T21:11:10.000000Z",
+                                                "updated_at": "2021-05-31T21:11:10.000000Z",
+                                                "content": "Totam impedit a aut beatae. Et ea sit quidem praesentium quos numquam.",
+                                                "user_id": 10,
+                                                "routine_id": 5
+                                            },
+                                            {
+                                                "id": 8,
+                                                "created_at": "2021-05-31T21:11:10.000000Z",
+                                                "updated_at": "2021-05-31T21:11:10.000000Z",
+                                                "content": "Voluptates nostrum deserunt libero tempora ipsa numquam. Fuga provident aspernatur suscipit voluptates. Eos expedita voluptate sapiente ipsum amet.",
+                                                "user_id": 2,
+                                                "routine_id": 5
+                                            },
+                                            {
+                                                "id": 41,
+                                                "created_at": "2021-06-01T10:37:37.000000Z",
+                                                "updated_at": "2021-06-01T10:37:37.000000Z",
+                                                "content": "Este es un comentario de prueba 2",
+                                                "user_id": 1,
+                                                "routine_id": 5
+                                            },
+                                            {
+                                                "id": 42,
+                                                "created_at": "2021-06-01T10:54:31.000000Z",
+                                                "updated_at": "2021-06-01T10:54:31.000000Z",
+                                                "content": "Este es un comentario de prueba 2",
+                                                "user_id": 1,
+                                                "routine_id": 5
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "OK. No autorizado"
+                    },
+                    "500": {
+                        "description": "Error"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/routines/{id}/rating": {
+            "post": {
+                "tags": [
+                    "Rutinas"
+                ],
+                "summary": "Añadir/Actualizar rating",
+                "operationId": "App\\Http\\Controllers\\RoutineController::addRating",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "example": {
+                                    "rating": 5
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "OK. Añade/Actualiza rating. Devuelve rutina con rating actualizado",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "status": 201,
+                                    "message": "Rating añadido con éxito",
+                                    "data": {
+                                        "id": 2,
+                                        "created_at": "2021-05-31T21:11:08.000000Z",
+                                        "updated_at": "2021-05-31T21:11:08.000000Z",
+                                        "user_id": 5,
+                                        "name": "Tempore quasi tenetur minus necessitatibus dolorum consequatur.",
+                                        "description": "Illo voluptas expedita excepturi omnis assumenda perferendis pariatur delectus. Rerum rem maiores delectus id consequuntur similique deleniti magnam. Totam qui rerum corrupti explicabo est. Commodi optio dolor iusto quod recusandae. Corporis deleniti assumenda veritatis sunt aut totam. Quisquam repudiandae consequatur voluptatibus iusto dignissimos. Odio ut quisquam blanditiis ratione. Enim eaque eveniet velit provident sint dolor. Aut sunt repellendus facere illum placeat voluptatem quia. Numquam est reprehenderit blanditiis sit cupiditate optio. Sapiente quis id soluta molestias non dicta omnis. Commodi velit doloremque et non dignissimos omnis. Voluptatem et et et aliquid. Laborum libero dicta consequatur neque optio enim at voluptates. Inventore suscipit cum facilis optio pariatur blanditiis. Necessitatibus tempore nesciunt nostrum neque. Debitis natus consequatur dicta. Ut qui minima quia aut quis eos est.",
+                                        "visualizations": 1661,
+                                        "rating": 4,
+                                        "bodyparts": [
+                                            "Brazo",
+                                            "Pierna"
+                                        ],
+                                        "categories": [
+                                            6
+                                        ],
+                                        "similar": [
+                                            2,
+                                            11
+                                        ],
+                                        "sets": [
+                                            {
+                                                "id": 314,
+                                                "created_at": "2021-05-31T21:11:08.000000Z",
+                                                "updated_at": "2021-05-31T21:11:08.000000Z",
+                                                "repetitions": 14,
+                                                "exercise_id": 11,
+                                                "pivot": {
+                                                    "routine_id": 2,
+                                                    "set_id": 314
+                                                },
+                                                "exercise": {
+                                                    "id": 11,
+                                                    "created_at": "2021-05-31T21:11:08.000000Z",
+                                                    "updated_at": "2021-05-31T21:11:08.000000Z",
+                                                    "name": "Curl de Bíceps",
+                                                    "description": "Quidem magnam modi et incidunt sed facilis. Sapiente aut nulla dolorum. Rerum non enim est error iure.",
+                                                    "videoURL": "https://www.youtube.com/embed/tMEGqKuOa-M",
+                                                    "muscles": [
+                                                        {
+                                                            "id": 1,
+                                                            "created_at": "2021-05-31T21:11:07.000000Z",
+                                                            "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                            "name": "Bíceps",
+                                                            "bodypart": "Brazo",
+                                                            "pivot": {
+                                                                "exercise_id": 11,
+                                                                "muscle_id": 1
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "id": 383,
+                                                "created_at": "2021-05-31T21:11:08.000000Z",
+                                                "updated_at": "2021-05-31T21:11:08.000000Z",
+                                                "repetitions": 23,
+                                                "exercise_id": 13,
+                                                "pivot": {
+                                                    "routine_id": 2,
+                                                    "set_id": 383
+                                                },
+                                                "exercise": {
+                                                    "id": 13,
+                                                    "created_at": "2021-05-31T21:11:08.000000Z",
+                                                    "updated_at": "2021-05-31T21:11:08.000000Z",
+                                                    "name": "Puente de Glúteos",
+                                                    "description": "Hic commodi dolor dolores aut. Illo rerum temporibus sit et assumenda ipsum est. Unde ea voluptatem dolorum saepe.",
+                                                    "videoURL": "https://www.youtube.com/embed/szgXdRA2R6Y",
+                                                    "muscles": [
+                                                        {
+                                                            "id": 6,
+                                                            "created_at": "2021-05-31T21:11:07.000000Z",
+                                                            "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                            "name": "Isquiotibiales",
+                                                            "bodypart": "Pierna",
+                                                            "pivot": {
+                                                                "exercise_id": 13,
+                                                                "muscle_id": 6
+                                                            }
+                                                        },
+                                                        {
+                                                            "id": 7,
+                                                            "created_at": "2021-05-31T21:11:07.000000Z",
+                                                            "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                            "name": "Glúteos",
+                                                            "bodypart": "Pierna",
+                                                            "pivot": {
+                                                                "exercise_id": 13,
+                                                                "muscle_id": 7
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        ],
+                                        "comments": []
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autorizado"
+                    },
+                    "400": {
+                        "description": "Error en la validación"
+                    },
+                    "500": {
+                        "description": "Error añadiendo rating"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/routines/{id}/visualization": {
+            "post": {
+                "tags": [
+                    "Rutinas"
+                ],
+                "summary": "Añadir visualización",
+                "operationId": "App\\Http\\Controllers\\RoutineController::addVisualization",
+                "responses": {
+                    "201": {
+                        "description": "OK. Añade una visualización. Devuelve la rutina actualizada",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "status": 201,
+                                    "message": "Visualización añadida con éxito",
+                                    "data": {
+                                        "id": 2,
+                                        "created_at": "2021-05-31T21:11:08.000000Z",
+                                        "updated_at": "2021-06-01T11:22:27.000000Z",
+                                        "user_id": 5,
+                                        "name": "Tempore quasi tenetur minus necessitatibus dolorum consequatur.",
+                                        "description": "Illo voluptas expedita excepturi omnis assumenda perferendis pariatur delectus. Rerum rem maiores delectus id consequuntur similique deleniti magnam. Totam qui rerum corrupti explicabo est. Commodi optio dolor iusto quod recusandae. Corporis deleniti assumenda veritatis sunt aut totam. Quisquam repudiandae consequatur voluptatibus iusto dignissimos. Odio ut quisquam blanditiis ratione. Enim eaque eveniet velit provident sint dolor. Aut sunt repellendus facere illum placeat voluptatem quia. Numquam est reprehenderit blanditiis sit cupiditate optio. Sapiente quis id soluta molestias non dicta omnis. Commodi velit doloremque et non dignissimos omnis. Voluptatem et et et aliquid. Laborum libero dicta consequatur neque optio enim at voluptates. Inventore suscipit cum facilis optio pariatur blanditiis. Necessitatibus tempore nesciunt nostrum neque. Debitis natus consequatur dicta. Ut qui minima quia aut quis eos est.",
+                                        "visualizations": 1662,
+                                        "rating": 4,
+                                        "bodyparts": [
+                                            "Brazo",
+                                            "Pierna"
+                                        ],
+                                        "categories": [
+                                            6
+                                        ],
+                                        "similar": [
+                                            2,
+                                            11
+                                        ],
+                                        "sets": [
+                                            {
+                                                "id": 314,
+                                                "created_at": "2021-05-31T21:11:08.000000Z",
+                                                "updated_at": "2021-05-31T21:11:08.000000Z",
+                                                "repetitions": 14,
+                                                "exercise_id": 11,
+                                                "pivot": {
+                                                    "routine_id": 2,
+                                                    "set_id": 314
+                                                },
+                                                "exercise": {
+                                                    "id": 11,
+                                                    "created_at": "2021-05-31T21:11:08.000000Z",
+                                                    "updated_at": "2021-05-31T21:11:08.000000Z",
+                                                    "name": "Curl de Bíceps",
+                                                    "description": "Quidem magnam modi et incidunt sed facilis. Sapiente aut nulla dolorum. Rerum non enim est error iure.",
+                                                    "videoURL": "https://www.youtube.com/embed/tMEGqKuOa-M",
+                                                    "muscles": [
+                                                        {
+                                                            "id": 1,
+                                                            "created_at": "2021-05-31T21:11:07.000000Z",
+                                                            "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                            "name": "Bíceps",
+                                                            "bodypart": "Brazo",
+                                                            "pivot": {
+                                                                "exercise_id": 11,
+                                                                "muscle_id": 1
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "id": 383,
+                                                "created_at": "2021-05-31T21:11:08.000000Z",
+                                                "updated_at": "2021-05-31T21:11:08.000000Z",
+                                                "repetitions": 23,
+                                                "exercise_id": 13,
+                                                "pivot": {
+                                                    "routine_id": 2,
+                                                    "set_id": 383
+                                                },
+                                                "exercise": {
+                                                    "id": 13,
+                                                    "created_at": "2021-05-31T21:11:08.000000Z",
+                                                    "updated_at": "2021-05-31T21:11:08.000000Z",
+                                                    "name": "Puente de Glúteos",
+                                                    "description": "Hic commodi dolor dolores aut. Illo rerum temporibus sit et assumenda ipsum est. Unde ea voluptatem dolorum saepe.",
+                                                    "videoURL": "https://www.youtube.com/embed/szgXdRA2R6Y",
+                                                    "muscles": [
+                                                        {
+                                                            "id": 6,
+                                                            "created_at": "2021-05-31T21:11:07.000000Z",
+                                                            "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                            "name": "Isquiotibiales",
+                                                            "bodypart": "Pierna",
+                                                            "pivot": {
+                                                                "exercise_id": 13,
+                                                                "muscle_id": 6
+                                                            }
+                                                        },
+                                                        {
+                                                            "id": 7,
+                                                            "created_at": "2021-05-31T21:11:07.000000Z",
+                                                            "updated_at": "2021-05-31T21:11:07.000000Z",
+                                                            "name": "Glúteos",
+                                                            "bodypart": "Pierna",
+                                                            "pivot": {
+                                                                "exercise_id": 13,
+                                                                "muscle_id": 7
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        ],
+                                        "comments": []
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "OK. No autorizado"
+                    },
+                    "500": {
+                        "description": "Error"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/users": {
+            "get": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Mostrar usuarios",
+                "operationId": "App\\Http\\Controllers\\UserController::index",
+                "responses": {
+                    "200": {
+                        "description": "Mostrar todos los usuarios.",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "status": 200,
+                                    "message": 200,
+                                    "data": [
+                                        {
+                                            "id": 1,
+                                            "name": "Tony Stark",
+                                            "email": "ironman@avengers.com",
+                                            "email_verified_at": "2021-05-31T21:11:08.000000Z",
+                                            "birthdate": "2013-05-31T00:00:00.000000Z",
+                                            "genre": "Hombre",
+                                            "description": "HOMBRE DE ACERO. Genio. Multimillonario. Filántropo. La confianza de Tony Stark solo se compara con sus habilidades de alto vuelo como el héroe llamado Iron Man.",
+                                            "created_at": "2021-05-31T21:11:08.000000Z",
+                                            "updated_at": "2021-05-31T21:11:08.000000Z",
+                                            "followers": [
+                                                6
+                                            ],
+                                            "followees": [],
+                                            "routines": [
+                                                1,
+                                                4,
+                                                22,
+                                                27,
+                                                35,
+                                                38
+                                            ],
+                                            "favourite_routines": [
+                                                1,
+                                                2
+                                            ]
+                                        },
+                                        {
+                                            "id": 2,
+                                            "name": "rreynolds",
+                                            "email": "mckenzie.rita@example.org",
+                                            "email_verified_at": "2021-05-31T21:11:08.000000Z",
+                                            "birthdate": "1994-05-12T05:56:26.000000Z",
+                                            "genre": "Hombre",
+                                            "description": "Explicabo vel consequatur sunt magnam dolores commodi eaque. Deserunt ut in molestiae et voluptatem et libero. Asperiores veritatis aut laborum autem. Officiis temporibus enim ratione vel.",
+                                            "created_at": "2021-05-31T21:11:08.000000Z",
+                                            "updated_at": "2021-05-31T21:11:08.000000Z",
+                                            "followers": [
+                                                3,
+                                                5
+                                            ],
+                                            "followees": [
+                                                5,
+                                                11
+                                            ],
+                                            "routines": [
+                                                16,
+                                                20,
+                                                30,
+                                                37
+                                            ],
+                                            "favourite_routines": [
+                                                3
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Crear usuario",
+                "operationId": "App\\Http\\Controllers\\UserController::store",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "genre": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "birthdate": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "name": "test2",
+                                    "email": "test2@test2.com",
+                                    "genre": "Hombre",
+                                    "password": "43211234",
+                                    "birthdate": "1996-05-17 00:00:00"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK. Crea un usuario",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "status": 200,
+                                    "message": "Registro completado con éxito. Inicia sesión para continuar",
+                                    "data": {
+                                        "name": "test2222",
+                                        "email": "test2222@test2.com",
+                                        "birthdate": "1996-05-17T00:00:00.000000Z",
+                                        "genre": "Hombre",
+                                        "updated_at": "2021-06-01T08:08:02.000000Z",
+                                        "created_at": "2021-06-01T08:08:02.000000Z",
+                                        "id": 12
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error de validación"
+                    },
+                    "500": {
+                        "description": "Error creando usuario"
+                    }
+                }
+            }
+        },
+        "/api/users/{id}": {
+            "put": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Actualizar Usuario",
+                "operationId": "App\\Http\\Controllers\\UserController::update",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        "example": "1"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "genre": {
+                                        "type": "string"
+                                    },
+                                    "birthdate": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "name": "Cpt America",
+                                    "email": "ironman@vengadores.com",
+                                    "genre": "Hombre",
+                                    "birthdate": "1996-05-17 00:00:00"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK. Actualiza el usuario",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "status": 200,
+                                    "message": "Usuario editado con éxito",
+                                    "data": {
+                                        "id": 1,
+                                        "name": "Carlos",
+                                        "email": "ironman@avengers.com",
+                                        "email_verified_at": "2021-05-31T21:11:08.000000Z",
+                                        "birthdate": "1996-05-17T00:00:00.000000Z",
+                                        "genre": "Hombre",
+                                        "description": "Desc ejemplo",
+                                        "created_at": "2021-05-31T21:11:08.000000Z",
+                                        "updated_at": "2021-06-01T08:19:45.000000Z",
+                                        "favourite_routines": [
+                                            5,
+                                            31
+                                        ],
+                                        "followers": [
+                                            6
+                                        ],
+                                        "followees": [],
+                                        "routines": [
+                                            1,
+                                            4,
+                                            22,
+                                            27,
+                                            35,
+                                            38
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autorizado"
+                    },
+                    "400": {
+                        "description": "Error en la validación"
+                    },
+                    "500": {
+                        "description": "Error actualizando el usuario"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/users/{userId}/addFavorite/{routineId}": {
+            "get": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Añadir rutina favorita",
+                "operationId": "App\\Http\\Controllers\\UserController::addFavorite",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "ID of user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        "example": "1"
+                    },
+                    {
+                        "name": "routineId",
+                        "in": "path",
+                        "description": "ID of routine",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK. Añade una rutina favorita",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "status": 200,
+                                    "message": "Rutina añadida a Favoritos con éxito",
+                                    "data": {
+                                        "id": 3,
+                                        "created_at": "2021-05-29T11:24:12.000000Z",
+                                        "updated_at": "2021-05-31T18:59:52.000000Z",
+                                        "user_id": 8,
+                                        "name": "Expedita ut doloremque facere quis accusantium praesentium.",
+                                        "description": "Consequatur a ut magnam corporis consectetur. Iure magni et error minus. In fugiat magnam aut. Dolor optio sed doloremque pariatur repellendus perspiciatis. Quasi consectetur consequatur eos mollitia. Et nam aut quisquam quibusdam aut. Dolor tempore quia qui ullam. Impedit voluptatem blanditiis consequatur repudiandae culpa. Qui qui sapiente voluptas cumque iste. Fugiat ea non iure non. Et consectetur labore recusandae. Molestiae in modi corporis et. Pariatur nobis aut et odit reiciendis. Autem sint minus provident modi voluptatem rerum. Aut dolore ipsum aut necessitatibus. Sapiente optio rerum et ut distinctio et magnam. Qui ipsam quia ea et vero consectetur delectus. Laboriosam perspiciatis eius sint voluptatem quos eos. Iste id non aliquam sint voluptatibus doloribus. Ipsum ipsa sit qui exercitationem at. Ea numquam eius iste quas sunt. Praesentium sunt adipisci quibusdam suscipit a placeat.",
+                                        "visualizations": 594
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Error. La rutina ya está en favoritos."
+                    },
+                    "401": {
+                        "description": "No autorizado"
+                    },
+                    "500": {
+                        "description": "Error"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/users/{userId}/removeFavorite/{routineId}": {
+            "get": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Eliminar rutina favorita",
+                "operationId": "App\\Http\\Controllers\\UserController::removeFavorite",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "ID of user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        "example": "1"
+                    },
+                    {
+                        "name": "routineId",
+                        "in": "path",
+                        "description": "ID of routine",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK. Elimina una rutina favorita",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "status": 200,
+                                    "message": "Rutina eliminada de Favoritos con éxito",
+                                    "data": {
+                                        "id": 3,
+                                        "created_at": "2021-05-29T11:24:12.000000Z",
+                                        "updated_at": "2021-05-31T18:59:52.000000Z",
+                                        "user_id": 8,
+                                        "name": "Expedita ut doloremque facere quis accusantium praesentium.",
+                                        "description": "Consequatur a ut magnam corporis consectetur. Iure magni et error minus. In fugiat magnam aut. Dolor optio sed doloremque pariatur repellendus perspiciatis. Quasi consectetur consequatur eos mollitia. Et nam aut quisquam quibusdam aut. Dolor tempore quia qui ullam. Impedit voluptatem blanditiis consequatur repudiandae culpa. Qui qui sapiente voluptas cumque iste. Fugiat ea non iure non. Et consectetur labore recusandae. Molestiae in modi corporis et. Pariatur nobis aut et odit reiciendis. Autem sint minus provident modi voluptatem rerum. Aut dolore ipsum aut necessitatibus. Sapiente optio rerum et ut distinctio et magnam. Qui ipsam quia ea et vero consectetur delectus. Laboriosam perspiciatis eius sint voluptatem quos eos. Iste id non aliquam sint voluptatibus doloribus. Ipsum ipsa sit qui exercitationem at. Ea numquam eius iste quas sunt. Praesentium sunt adipisci quibusdam suscipit a placeat.",
+                                        "visualizations": 594
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autorizado"
+                    },
+                    "500": {
+                        "description": "Error"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/users/{userId}/follow/{targetId}": {
+            "post": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Seguir",
+                "operationId": "App\\Http\\Controllers\\UserController::follow",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "ID of user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        "example": "1"
+                    },
+                    {
+                        "name": "targetId",
+                        "in": "path",
+                        "description": "ID of target user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK. Sigue a un usuario",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "status": 200,
+                                    "message": "Usuario seguido con éxito",
+                                    "data": 10
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autorizado"
+                    },
+                    "409": {
+                        "description": "Ya sigues al usuario"
+                    },
+                    "500": {
+                        "description": "Error"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/users/{userId}/unfollow/{targetId}": {
+            "post": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Dejar de seguir",
+                "operationId": "App\\Http\\Controllers\\UserController::unfollow",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "ID of user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        "example": "1"
+                    },
+                    {
+                        "name": "targetId",
+                        "in": "path",
+                        "description": "ID of target user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK. Deja de seguir a un usuario",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "status": 200,
+                                    "message": "Usuario dejado de seguir con éxito",
+                                    "data": 10
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autorizado"
+                    },
+                    "500": {
+                        "description": "Error"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/workouts": {
+            "get": {
+                "tags": [
+                    "Registros de ejercicio"
+                ],
+                "summary": "Obtener registros de ejercicios",
+                "operationId": "App\\Http\\Controllers\\WorkoutController::index",
+                "responses": {
+                    "200": {
+                        "description": "Obtener todos los registros de ejercicio.",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "status": 200,
+                                    "message": 200,
+                                    "data": [
+                                        {
+                                            "id": 17,
+                                            "created_at": "2021-05-31T21:11:09.000000Z",
+                                            "updated_at": "2021-05-31T21:11:09.000000Z",
+                                            "name": "Earum aliquam quos illo error qui.",
+                                            "date": "2020-05-17 15:27:54",
+                                            "weight": 50,
+                                            "fat_percentage": 80,
+                                            "notes": "Consequatur animi architecto ut ut. Saepe mollitia quo doloremque amet ex et aspernatur voluptatibus. In et doloremque et magni hic. Voluptatem quaerat reiciendis nostrum optio veniam hic aut.",
+                                            "user_id": 1,
+                                            "sets": [
+                                                {
+                                                    "id": 256,
+                                                    "created_at": "2021-05-31T21:11:08.000000Z",
+                                                    "updated_at": "2021-05-31T21:11:08.000000Z",
+                                                    "repetitions": 16,
+                                                    "exercise_id": 9,
+                                                    "pivot": {
+                                                        "workout_id": 17,
+                                                        "set_id": 256,
+                                                        "weight": 71
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Ha ocurrido un error."
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Registros de ejercicio"
+                ],
+                "summary": "Crear Registro de ejercicio",
+                "operationId": "App\\Http\\Controllers\\WorkoutController::store",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "example": {
+                                    "user_id": 1,
+                                    "name": "Workout SETS",
+                                    "notes": "Notas de ejemplo",
+                                    "weight": 50,
+                                    "fat_percentage": 42,
+                                    "date": "2021-03-21 14:14:36",
+                                    "sets": [
+                                        {
+                                            "exercise": 1,
+                                            "repetitions": 10,
+                                            "weight": 22
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "OK. Crea una registro de ejercicio",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "status": 201,
+                                    "message": "Workout creado con éxito",
+                                    "data": {
+                                        "user_id": 1,
+                                        "name": "Workout Test",
+                                        "notes": "Workout Notes",
+                                        "weight": 50,
+                                        "fat_percentage": 42,
+                                        "date": "2021-03-21 14:14:36",
+                                        "updated_at": "2021-06-01T08:57:51.000000Z",
+                                        "created_at": "2021-06-01T08:57:51.000000Z",
+                                        "id": 751,
+                                        "sets": [
+                                            {
+                                                "id": 10,
+                                                "created_at": "2021-05-31T21:11:08.000000Z",
+                                                "updated_at": "2021-05-31T21:11:08.000000Z",
+                                                "repetitions": 10,
+                                                "exercise_id": 1,
+                                                "pivot": {
+                                                    "workout_id": 751,
+                                                    "set_id": 10,
+                                                    "weight": 22
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autorizado"
+                    },
+                    "400": {
+                        "description": "Error de validación"
+                    },
+                    "500": {
+                        "description": "Error añadiendo registro de ejercicio"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/workouts/{id}": {
+            "put": {
+                "tags": [
+                    "Registros de ejercicio"
+                ],
+                "summary": "Actualizar Registro de ejercicio",
+                "operationId": "App\\Http\\Controllers\\WorkoutController::update",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del registro de ejercicio",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        "example": "1"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "example": {
+                                    "user_id": 1,
+                                    "name": "Workout SETS",
+                                    "notes": "Notas de ejemplo",
+                                    "weight": 50,
+                                    "fat_percentage": 42,
+                                    "date": "2021-03-21 14:14:36",
+                                    "sets": [
+                                        {
+                                            "exercise": 1,
+                                            "repetitions": 10,
+                                            "weight": 22
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "OK. Actualiza un registro de ejercicio",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "status": 201,
+                                    "message": "Workout editado con éxito",
+                                    "data": {
+                                        "id": 22,
+                                        "created_at": "2021-05-31T21:11:09.000000Z",
+                                        "updated_at": "2021-06-01T09:33:47.000000Z",
+                                        "name": "Workout Test",
+                                        "date": "2021-03-21 14:14:36",
+                                        "weight": 50,
+                                        "fat_percentage": 42,
+                                        "notes": "Update test",
+                                        "user_id": 1,
+                                        "sets": [
+                                            {
+                                                "id": 10,
+                                                "created_at": "2021-05-31T21:11:08.000000Z",
+                                                "updated_at": "2021-05-31T21:11:08.000000Z",
+                                                "repetitions": 10,
+                                                "exercise_id": 1,
+                                                "pivot": {
+                                                    "workout_id": 22,
+                                                    "set_id": 10,
+                                                    "weight": 22
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autorizado"
+                    },
+                    "400": {
+                        "description": "Error de validación "
+                    },
+                    "500": {
+                        "description": "Error actualizando registro de ejercicio"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Registros de ejercicio"
+                ],
+                "summary": "Borrar registro de ejerccio",
+                "operationId": "App\\Http\\Controllers\\WorkoutController::delete",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del registro de ejercicio",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK. Borra un registro de ejercicio",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "status": 200,
+                                    "message": "Workout eliminado con éxito",
+                                    "data": {
+                                        "id": 17
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autorizado"
+                    },
+                    "500": {
+                        "description": "Error"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "responses": {
+            "default": {
+                "description": "Ha ocurrido un error."
+            }
+        },
+        "securitySchemes": {
+            "apiAuth": {
+                "type": "http",
+                "description": "Login with email and password to get the authentication token",
+                "name": "Token based",
+                "in": "header",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "security": [
+        []
+    ]
+}

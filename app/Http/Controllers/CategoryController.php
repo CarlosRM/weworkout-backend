@@ -7,35 +7,72 @@ use Illuminate\Http\Request;
 
 class CategoryController extends ApiController
 {
+    /**
+    * @OA\Get(
+    *     path="/api/categories",
+    *     summary="Obtener categories",
+    *     tags={"Categorías"},
+    *     @OA\Response(
+    *         response=200,
+    *         description="Obtener todas las categorías.",
+    *         @OA\MediaType(
+    *             mediaType="application/json",
+    *              example=
+    *                       {
+    *                            "status": 200,
+    *                            "message": 200,
+    *                            "data": {
+    *                                {
+    *                                    "id": 1,
+    *                                    "created_at": "2021-05-31T21:11:07.000000Z",
+    *                                    "updated_at": "2021-05-31T21:11:07.000000Z",
+    *                                    "name": "Principiante"
+    *                                },
+    *                                {
+    *                                    "id": 2,
+    *                                    "created_at": "2021-05-31T21:11:07.000000Z",
+    *                                    "updated_at": "2021-05-31T21:11:07.000000Z",
+    *                                    "name": "Intermedio"
+    *                                },
+    *                                {
+    *                                    "id": 3,
+    *                                    "created_at": "2021-05-31T21:11:07.000000Z",
+    *                                    "updated_at": "2021-05-31T21:11:07.000000Z",
+    *                                    "name": "Avanzado"
+    *                                },
+    *                                {
+    *                                    "id": 4,
+    *                                    "created_at": "2021-05-31T21:11:07.000000Z",
+    *                                    "updated_at": "2021-05-31T21:11:07.000000Z",
+    *                                    "name": "Ligero"
+    *                                },
+    *                                {
+    *                                    "id": 5,
+    *                                    "created_at": "2021-05-31T21:11:07.000000Z",
+    *                                    "updated_at": "2021-05-31T21:11:07.000000Z",
+    *                                    "name": "Intenso"
+    *                                },
+    *                                {
+    *                                    "id": 6,
+    *                                    "created_at": "2021-05-31T21:11:07.000000Z",
+    *                                    "updated_at": "2021-05-31T21:11:07.000000Z",
+    *                                    "name": "Rápido"
+    *                                }
+    *                            }
+    *                        }
+    *                  ),     
+    *     ),
+    *     @OA\Response(
+    *         response="default",
+    *         description="Ha ocurrido un error."
+    *     ),
+    *  security={{ "apiAuth": {} }}
+    * )
+    */
     public function index()
     {
         $categories = Category::all();
         return $this->successResponse($categories, 200);
     }
 
-    public function show(Category $category)
-    {
-        return $category;
-    }
-
-    public function store(Request $request)
-    {
-        $category = Category::create($request->all());
-
-        return response()->json($category, 201);
-    }
-
-    public function update(Request $request, Category $category)
-    {
-        $category->update($request->all());
-
-        return response()->json($category, 200);
-    }
-
-    public function delete(Category $category)
-    {
-        $category->delete();
-
-        return response()->json(null, 204);
-    }
 }
